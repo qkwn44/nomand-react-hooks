@@ -1,50 +1,35 @@
-import React, { StrictMode, useState } from "react";
+import React, { StrictMode, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
-const content = [
-  { tab: "section1", content: "i'm the content of the Section 1" },
-  { tab: "section2", content: "i'm the content of the Section 2" },
-];
+//useEffect
+// 첫 로드 될 때와 버튼을 누를 때마다 sayHello함수가 실행됨을 볼 수 있다.
+// => componentDidmount, coponentDidUpdate 역할 모두를 수행
+// 2개의 인자를 가짐.
 
-const useTabs = (initialTab, allTabs) => {
-  //useState는 항상 initialTab(디폴트값)를 갖는다
-  const [currentIdx, setCurrentIdx] = useState(initialTab);
-  //만약 allTabs가 (true가)아니거나 allTabs가 배열이라면
-  if (!allTabs || Array.isArray(allTabs)) {
-    return;
-  }
-
-  //버튼 클릭 후 현재 선택한 content의 index값을 갖도록 하면 된다.
-  return {
-    //기본적으로 currentItem은 allTabs[currentIdx] 값을 가짐.
-    currentItem: allTabs[currentIdx],
-    changeItem: setCurrentIdx,
-  };
-};
+// 첫번째는 function으로써의 effect
+// 두번째는, 만약 deps가 있다면 effect는 (deps)리스트에 있는 값일 때만 값이 변하도록 활성화.
 
 const App = () => {
-  //초기에 initialTab값을 갖고 싶으면 useTabs의 첫번째 배열을 갖도록 하면 된다.
-  const { currentItem, changeItem } = useTabs(0, content);
+  //component가 mount 되자마자 function 실행
+  const sayHello = () => console.log("hello");
+  // useEffect(() => {
+  //   sayHello();
+  // });  useEffect(sayHello)와 동일하게 작성가능;
+
+  const [number, setNumber] = useState(0);
+  const [aNumber, setAnumber] = useState(0);
+
+  //number가 변할 때만 sayHello가 작동하도록 변경
+  useEffect(sayHello, [number]);
+
   return (
     <div className="App">
-      {content.map((section, index) => (
-        <button onClick={() => changeItem(index)} key={index}>
-          {section.tab}
-        </button>
-      ))}
-      <div> {currentItem.content}</div>
+      <div>Hi</div>
+      <button onClick={() => setNumber(number + 1)}>{number}</button>
+      <button onClick={() => setAnumber(aNumber + 1)}>{aNumber}</button>
     </div>
   );
 };
-
-//초기에 content의 첫 번째 배열을 갖는다.
-//만약 allTabs가 true값을 갖거나, 배열일 경우 값 리턴.
-
-//useTabs는 currentItem을 리턴.
-
-//Array.isArray() 해당 인자가 배열인지
-
-// 클릭 후 현재 클릭 한 content의 index값을 갖도록 한다.
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
