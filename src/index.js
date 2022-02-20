@@ -1,46 +1,50 @@
 import React, { StrictMode, useState } from "react";
 import ReactDOM from "react-dom";
 
-//useInput : input 업데이트
+const content = [
+  { tab: "section1", content: "i'm the content of the Section 1" },
+  { tab: "section2", content: "i'm the content of the Section 2" },
+];
 
-//useInput의 값은 initialValue로 받아 useState의 inialValue로 전달.
-// value와 같은 값을 가진다
-const useInput = (initialValue, validator) => {
-  //기본값을 value와 함께 return ! + onChange도 함께
-  const [value, setValue] = useState(initialValue);
-  const onChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    let willUpdate = true;
+const useTabs = (initialTab, allTabs) => {
+  //useState는 항상 initialTab(디폴트값)를 갖는다
+  const [currentIdx, setCurrentIdx] = useState(initialTab);
+  //만약 allTabs가 (true가)아니거나 allTabs가 배열이라면
+  if (!allTabs || Array.isArray(allTabs)) {
+    return;
+  }
 
-    if (typeof validator === "function") {
-      //validator 타입이 func이라면
-      willUpdate = validator(value);
-    }
-    if (willUpdate) {
-      // willUpdate는 true. 항상 업데이트 완.
-      setValue(value);
-    }
+  //버튼 클릭 후 현재 선택한 content의 index값을 갖도록 하면 된다.
+  return {
+    //기본적으로 currentItem은 allTabs[currentIdx] 값을 가짐.
+    currentItem: allTabs[currentIdx],
+    changeItem: setCurrentIdx,
   };
-  return { value, onChange };
 };
-const App = () => {
-  //기본값을 validator func에 있는 value로 전달
-  //validator func이 true,false를 return
-  const maxLen = (value) => value.length <= 10; //value의 길이 저장
 
-  //name을 이용해 useInput에 Mr, maxLength 전달
-  const name = useInput("Ms.", maxLen);
+const App = () => {
+  //초기에 initialTab값을 갖고 싶으면 useTabs의 첫번째 배열을 갖도록 하면 된다.
+  const { currentItem, changeItem } = useTabs(0, content);
   return (
     <div className="App">
-      <h1>Hello</h1>
-      {/* name은 value와 동일한 값을 가짐 */}
-      {/* value={name.value} onChange={name.onChange} 이렇게 작성하는 대신 {...name} 으로 작성할 수 았음 */}
-      <input type="text" placeholder="Name" {...name} />
+      {content.map((section, index) => (
+        <button onClick={() => changeItem(index)} key={index}>
+          {section.tab}
+        </button>
+      ))}
+      <div> {currentItem.content}</div>
     </div>
   );
 };
+
+//초기에 content의 첫 번째 배열을 갖는다.
+//만약 allTabs가 true값을 갖거나, 배열일 경우 값 리턴.
+
+//useTabs는 currentItem을 리턴.
+
+//Array.isArray() 해당 인자가 배열인지
+
+// 클릭 후 현재 클릭 한 content의 index값을 갖도록 한다.
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
