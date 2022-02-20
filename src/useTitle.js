@@ -1,5 +1,6 @@
 import React, { StrictMode, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+
 const useTitle = (initialTitle) => {
   const [title, setTitle] = useState(initialTitle);
   const updateTitle = () => {
@@ -14,10 +15,8 @@ const useTitle = (initialTitle) => {
   return setTitle;
 };
 const App = () => {
-  //useTitle의 기본값 설정 : "Loading..."
+  //useTitle의 기본값 설정 : "Loading..." 3초 후에 title 업데이트
   const titleUpdater = useTitle("Loading...");
-
-  //3초 후에 title을 home으로 변경하는 setTimeout 작성
   setTimeout(() => {
     titleUpdater("Home");
   }, 3000);
@@ -27,6 +26,7 @@ const App = () => {
     </div>
   );
 };
+
 const rootElement = document.getElementById("root");
 ReactDOM.render(
   <StrictMode>
