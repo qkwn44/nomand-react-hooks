@@ -8,13 +8,14 @@ const useClick = (onClick) => {
     if (element.current) {
       element.current.addEventListener("click", onClick);
     }
+    //useEffect에서 return한 함수는 componentWillUnmount 때 호출된다.
     return () => {
       if (element.current) {
         element.current.removeEventListener("click", onClick);
       }
     };
     // componentWillDidMount될 때 단 한번만 실행하기 위해
-    //두번째 인자로 빈 배열을 넣어준ㄷ.
+    //두번째 인자로 빈 배열을 넣어준다.
   }, []);
   if (typeof onClick !== "function") {
     return;
