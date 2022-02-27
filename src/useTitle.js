@@ -15,6 +15,9 @@ const useTitle = (initialTitle) => {
   return setTitle;
 };
 const App = () => {
+  //loading을 useTitle의 기본값으로 사용
+  //titleUpdater은 setTitle과 동일
+
   //useTitle의 기본값 설정 : "Loading..." 3초 후에 title 업데이트
   const titleUpdater = useTitle("Loading...");
   setTimeout(() => {

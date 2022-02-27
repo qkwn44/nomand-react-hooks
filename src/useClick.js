@@ -3,11 +3,6 @@ import ReactDOM from "react-dom";
 
 const useClick = (onClick) => {
   const element = useRef();
-
-  if (typeof onClick !== "function") {
-    return;
-  }
-
   //useEffect : refer 안에 element.current가 있으면 클릭이벤트 실행
   useEffect(() => {
     if (element.current) {
@@ -18,7 +13,12 @@ const useClick = (onClick) => {
         element.current.removeEventListener("click", onClick);
       }
     };
+    // componentWillDidMount될 때 단 한번만 실행하기 위해
+    //두번째 인자로 빈 배열을 넣어준ㄷ.
   }, []);
+  if (typeof onClick !== "function") {
+    return;
+  }
   return element;
 };
 
