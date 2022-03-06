@@ -39,6 +39,3 @@ ReactDOM.render(
   </StrictMode>,
   rootElement
 );
-
-//https://velog.io/@dev-hannahk/react-custom-hooks#%F0%9F%A5%B3-%EC%99%84%EA%B0%95-%ED%9B%84%EA%B8%B0
-//참고링크
