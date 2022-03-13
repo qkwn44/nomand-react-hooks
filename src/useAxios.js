@@ -12,18 +12,18 @@ const useAxios = (opts, axiosInstance = axios) => {
     error: null,
     data: null,
   });
+
   const [trigger, setTrigger] = useState(0);
-  //useEffect call axios
+
   const refetch = () => {
     setState({
       ...state,
       loading: true,
     });
-    setTrigger(new Date());
+    setTrigger(Date.now());
   };
+
   useEffect(() => {
-    //axios instance use
-    //options인 configuration 전달
     axiosInstance(opts)
       .then((data) => {
         setState({
@@ -32,34 +32,37 @@ const useAxios = (opts, axiosInstance = axios) => {
           data,
         });
       })
-      .catch((err) => {
-        setState({ ...state, loading: false, err });
+      .catch((error) => {
+        setState({
+          ...state,
+          loading: false,
+          error,
+        });
       });
-    //trigerr watching
   }, [trigger]);
-  //new func retunr
-  return { ...state, refetch };
+
   if (!opts.url) {
     return;
   }
+  return { ...state, refetch };
 };
-//axios 약간의 customization, configuration 하용
 
 function App() {
-  const { loading, data, error, refetch } = useAxios({
+  const { loading, error, data, refetch } = useAxios({
     url: "https://yts-proxy.now.sh/list_movies.json ",
   });
 
   console.log(
     `Loading: ${loading}, Error: ${error}, Data: ${JSON.stringify(data)},`
   );
+
   return (
     <div className="app-box" style={{ height: "1000vh" }}>
       <h1>Welcome to React Custom Hooks Page</h1>
       <h2>#10. useAxios</h2>
-      <h3>{data && data.status}</h3>
-      <div>{loading && "Loading"}</div>
-      <button onClick={refetch}>Refecth</button>
+      <h2>Data Status: {data && data.status}</h2>
+      <h2>{loading && "Loading..."}</h2>
+      <button onClick={refetch}>Refech</button>
     </div>
   );
 }
